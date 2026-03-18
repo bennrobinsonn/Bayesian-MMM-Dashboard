@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c \"import ast; ast.parse\\(open\\(''modeling/fit_models.py''\\).read\\(\\)\\); print\\(''Syntax OK''\\)\")",
+      "Bash(python modeling/fit_models.py --help)",
+      "Bash(python -c \"from api.main import app; print\\(''App loaded OK''\\); print\\(''Routes:'', [r.path for r in app.routes]\\)\")",
+      "Bash(pip install:*)",
+      "Bash(python -c \"import ast; ast.parse\\(open\\(''api/services/inference.py''\\).read\\(\\)\\); print\\(''Syntax OK''\\)\")",
+      "Bash(python -c \"from api.services.inference import get_channel_contributions, get_saturation_curves, get_model_fit, spend_stats_from_df; print\\(''All exports importable OK''\\)\")",
+      "Bash(python -c \":*)"
+    ]
+  }
+}

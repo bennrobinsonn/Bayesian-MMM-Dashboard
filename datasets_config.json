@@ -1,0 +1,49 @@
+{
+  "brands": [
+    {
+      "id": "kova",
+      "name": "Kova",
+      "vertical": "DTC / Performance",
+      "channels": ["Meta", "TikTok", "Paid_Search", "Email"],
+      "description": "A DTC running watch brand scaling through performance marketing and community-driven social.",
+      "spend_profile": "Performance-heavy, lower spend magnitudes. TikTok saturates faster than Meta."
+    },
+    {
+      "id": "poppa_bueno",
+      "name": "Poppa Bueno",
+      "vertical": "CPG / Retail",
+      "channels": ["TV", "Meta", "OOH", "Trade_Promo"],
+      "description": "A family-owned hot sauce brand that went viral and is now scaling into retail with a mix of broadcast and digital spend.",
+      "spend_profile": "TV-heavy with high OOH. Trade_Promo is a derived channel with lumpy, event-driven spend."
+    },
+    {
+      "id": "nestwork",
+      "name": "Nestwork",
+      "vertical": "B2B SaaS / Proptech",
+      "channels": ["LinkedIn", "Content_SEO", "Paid_Search", "Webinars"],
+      "description": "A B2B proptech platform for independent landlords, relying on thought leadership and intent-based channels.",
+      "spend_profile": "Lower overall spend. LinkedIn dominates. Webinars is a derived channel with event-cadence noise."
+    }
+  ],
+  "prior_configs": {
+    "conservative": {
+      "sigma": 0.3,
+      "description": "Skeptical of all channels — tight prior, posterior stays close to zero"
+    },
+    "balanced": {
+      "sigma": 0.7,
+      "description": "Neutral / no strong belief — moderate prior, data drives the posterior"
+    },
+    "aggressive": {
+      "sigma": 1.5,
+      "description": "Believes channels are strong drivers — wide prior, high posterior flexibility"
+    }
+  },
+  "s3_bucket": "mmm-project-inference-data",
+  "file_naming_convention": "{brand_id}_{prior_config}.nc",
+  "examples": [
+    "kova_balanced.nc",
+    "poppa_bueno_conservative.nc",
+    "nestwork_aggressive.nc"
+  ]
+}
