@@ -7,7 +7,9 @@
       "Bash(pip install:*)",
       "Bash(python -c \"import ast; ast.parse\\(open\\(''api/services/inference.py''\\).read\\(\\)\\); print\\(''Syntax OK''\\)\")",
       "Bash(python -c \"from api.services.inference import get_channel_contributions, get_saturation_curves, get_model_fit, spend_stats_from_df; print\\(''All exports importable OK''\\)\")",
-      "Bash(python -c \":*)"
+      "Bash(python -c \":*)",
+      "Bash(npm install:*)",
+      "Bash(npm run:*)"
     ]
   }
 }
