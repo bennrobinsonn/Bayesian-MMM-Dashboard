@@ -18,7 +18,25 @@
       "Bash(python3 -c \":*)",
       "Bash(pip3 install:*)",
       "Bash(aws iam create-role --role-name mmm-ec2-s3-read --assume-role-policy-document '{:*)",
-      "Bash(aws iam:*)"
+      "Bash(aws iam:*)",
+      "Bash(ssh -i ~/.ssh/mmm-key.pem -o StrictHostKeyChecking=no ec2-user@35.172.191.38 \"echo connected\")",
+      "Bash(ssh -i ~/.ssh/mmm-key.pem ec2-user@35.172.191.38 \":*)",
+      "Bash(ssh -i ~/.ssh/mmm-key.pem ec2-user@35.172.191.38 \"sudo pkill -f uvicorn; echo done\")",
+      "Bash(ssh -i ~/.ssh/mmm-key.pem ec2-user@35.172.191.38 \"echo test\")",
+      "Bash(ssh -i ~/.ssh/mmm-key.pem ec2-user@35.172.191.38 \"ps aux | grep uvicorn | grep -v grep | grep -v ssh\")",
+      "Bash(ssh -i ~/.ssh/mmm-key.pem ec2-user@35.172.191.38 \"tail -20 /home/ec2-user/uvicorn.log\")",
+      "Bash(curl -s http://35.172.191.38:8000/health)",
+      "Bash(aws apigatewayv2:*)",
+      "Bash(BASE=\"https://lbh9jtn0q6.execute-api.us-east-1.amazonaws.com\" __NEW_LINE_edebfbee5b3d9798__ echo \"=== /health ===\")",
+      "Bash(curl -s \"$BASE/health\")",
+      "Bash(python3 -m json.tool echo \"\" echo \"=== /datasets ===\")",
+      "Bash(curl -s \"$BASE/datasets\")",
+      "Bash(python3 -m json.tool)",
+      "Bash(ssh -i ~/.ssh/mmm-key.pem ec2-user@35.172.191.38 \"tail -12 /home/ec2-user/uvicorn.log\")",
+      "Bash(curl -s -X POST \"https://lbh9jtn0q6.execute-api.us-east-1.amazonaws.com/recommend\" -H \"Content-Type: application/json\" -d '{:*)",
+      "Bash(ssh -i ~/.ssh/mmm-key.pem ec2-user@35.172.191.38 \"tail -30 /home/ec2-user/uvicorn.log\")",
+      "Bash(aws bedrock:*)",
+      "Bash(ssh -i ~/.ssh/mmm-key.pem ec2-user@35.172.191.38 \"cd /home/ec2-user/mmm-project && git pull origin main && echo pulled\")"
     ]
   }
 }
