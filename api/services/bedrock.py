@@ -3,7 +3,7 @@ api/services/bedrock.py
 -----------------------
 Amazon Bedrock integration for the AI recommendation layer.
 
-Model: anthropic.claude-haiku-20240307-v1:0  (cheapest Claude, fast, sufficient)
+Model: anthropic.claude-3-haiku-20240307-v1:0  (cheapest Claude, fast, sufficient)
 Region: us-east-1
 Max tokens: 500  (keeps Bedrock costs near-zero — ~$0.0004 per call)
 Temperature: 0.3  (low = consistent, grounded recommendations)
@@ -102,7 +102,7 @@ def _call_bedrock(prompt: str) -> dict:
       1. boto3 installed  ✓  (in requirements.txt)
       2. AWS credentials configured (IAM role on EC2, or Identity Center locally)
       3. EC2 instance role includes: bedrock:InvokeModel on
-         arn:aws:bedrock:us-east-1::foundation-model/anthropic.claude-haiku-20240307-v1:0
+         arn:aws:bedrock:us-east-1::foundation-model/anthropic.claude-3-haiku-20240307-v1:0
     """
     import boto3
     client = boto3.client("bedrock-runtime", region_name="us-east-1")
@@ -115,7 +115,7 @@ def _call_bedrock(prompt: str) -> dict:
     })
 
     response = client.invoke_model(
-        modelId="anthropic.claude-haiku-20240307-v1:0",
+        modelId="anthropic.claude-3-haiku-20240307-v1:0",
         body=body,
         contentType="application/json",
         accept="application/json",
