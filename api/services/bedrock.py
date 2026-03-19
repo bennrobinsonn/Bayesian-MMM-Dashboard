@@ -96,38 +96,36 @@ Ground every claim in the numbers above. Be direct. Do not hedge excessively."""
 
 def _call_bedrock(prompt: str) -> dict:
     """
-    Calls Amazon Titan Text Express on Bedrock and returns parsed JSON response.
+    Calls Amazon Nova Micro on Bedrock and returns parsed JSON response.
 
-    Titan uses a different request/response shape from Claude:
-      Request:  { inputText, textGenerationConfig: { maxTokenCount, temperature, topP } }
-      Response: { results: [ { outputText } ] }
+    Nova uses the Converse-style messages format:
+      Request:  { messages: [{role, content: [{text}]}], inferenceConfig: {...} }
+      Response: { output: { message: { content: [{text}] } } }
 
-    No use-case approval required — Titan is AWS-native and enabled by default.
-    IAM permission: bedrock:InvokeModel on amazon.titan-text-express-v1
+    No use-case approval required — Nova is AWS-native and enabled by default.
+    IAM permission: bedrock:InvokeModel on amazon.nova-micro-v1:0
     """
     import boto3
     client = boto3.client("bedrock-runtime", region_name="us-east-1")
 
-    # Titan's request body — note: maxTokenCount (not max_tokens)
     body = json.dumps({
-        "inputText": prompt,
-        "textGenerationConfig": {
-            "maxTokenCount": 500,
+        "messages": [{"role": "user", "content": [{"text": prompt}]}],
+        "inferenceConfig": {
+            "maxNewTokens": 500,
             "temperature": 0.3,
-            "topP": 0.9,
         },
     })
 
     response = client.invoke_model(
-        modelId="amazon.titan-text-express-v1",
+        modelId="amazon.nova-micro-v1:0",
         body=body,
         contentType="application/json",
         accept="application/json",
     )
 
     raw = json.loads(response["body"].read())
-    # Titan returns: { "results": [ { "outputText": "..." } ] }
-    text = raw["results"][0]["outputText"]
+    # Nova returns: { "output": { "message": { "content": [{"text": "..."}] } } }
+    text = raw["output"]["message"]["content"][0]["text"]
 
     # Strip markdown code fences if present, then parse JSON
     text = re.sub(r"^```(?:json)?\s*|\s*```$", "", text.strip())
