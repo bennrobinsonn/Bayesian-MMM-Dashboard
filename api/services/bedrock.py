@@ -29,8 +29,7 @@ import json
 import re
 
 # ── Toggle ─────────────────────────────────────────────────────────────────────
-# Flip to True once AWS credentials are confirmed working.
-BEDROCK_ENABLED = False
+BEDROCK_ENABLED = True
 
 # ── Prompt builder ─────────────────────────────────────────────────────────────
 
@@ -105,32 +104,29 @@ def _call_bedrock(prompt: str) -> dict:
       3. EC2 instance role includes: bedrock:InvokeModel on
          arn:aws:bedrock:us-east-1::foundation-model/anthropic.claude-haiku-20240307-v1:0
     """
-    raise NotImplementedError("BEDROCK_ENABLED is True but AWS credentials are not yet configured.")
+    import boto3
+    client = boto3.client("bedrock-runtime", region_name="us-east-1")
 
-    # ── Uncomment when credentials are ready ────────────────────────────────
-    # import boto3, json
-    # client = boto3.client("bedrock-runtime", region_name="us-east-1")
-    #
-    # body = json.dumps({
-    #     "anthropic_version": "bedrock-2023-05-31",
-    #     "max_tokens": 500,
-    #     "temperature": 0.3,
-    #     "messages": [{"role": "user", "content": prompt}],
-    # })
-    #
-    # response = client.invoke_model(
-    #     modelId="anthropic.claude-haiku-20240307-v1:0",
-    #     body=body,
-    #     contentType="application/json",
-    #     accept="application/json",
-    # )
-    #
-    # raw = json.loads(response["body"].read())
-    # text = raw["content"][0]["text"]
-    #
-    # # Strip markdown code fences if present, then parse JSON
-    # text = re.sub(r"^```(?:json)?\s*|\s*```$", "", text.strip())
-    # return json.loads(text)
+    body = json.dumps({
+        "anthropic_version": "bedrock-2023-05-31",
+        "max_tokens": 500,
+        "temperature": 0.3,
+        "messages": [{"role": "user", "content": prompt}],
+    })
+
+    response = client.invoke_model(
+        modelId="anthropic.claude-haiku-20240307-v1:0",
+        body=body,
+        contentType="application/json",
+        accept="application/json",
+    )
+
+    raw = json.loads(response["body"].read())
+    text = raw["content"][0]["text"]
+
+    # Strip markdown code fences if present, then parse JSON
+    text = re.sub(r"^```(?:json)?\s*|\s*```$", "", text.strip())
+    return json.loads(text)
 
 
 # ── Local fallback ─────────────────────────────────────────────────────────────
