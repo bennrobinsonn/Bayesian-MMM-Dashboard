@@ -235,26 +235,20 @@ def upload_to_s3(models_dir: Path, bucket: str) -> None:
     Cost note: S3 PUT requests are $0.005 per 1,000 requests. 9 files = ~$0.00.
     Storage for 9 small .nc files (~50MB total) ≈ $0.001/month. Negligible.
     """
-    raise NotImplementedError(
-        "AWS credentials not yet configured. "
-        "Configure IAM Identity Center access, then uncomment this function body."
-    )
+    import boto3
+    session = boto3.Session(profile_name="mmm-project")
+    s3 = session.client("s3", region_name="us-east-1")
 
-    # ── Uncomment below once credentials are ready ──────────────────────────
-    # import boto3
-    # session = boto3.Session(profile_name="<your_profile_name>")
-    # s3 = session.client("s3", region_name="us-east-1")
-    #
-    # nc_files = list(models_dir.glob("*.nc"))
-    # print(f"\nUploading {len(nc_files)} .nc files to s3://{bucket}/")
-    # for nc_path in nc_files:
-    #     s3.upload_file(
-    #         Filename=str(nc_path),
-    #         Bucket=bucket,
-    #         Key=nc_path.name,
-    #     )
-    #     print(f"  Uploaded → s3://{bucket}/{nc_path.name}")
-    # print("Upload complete.")
+    nc_files = list(models_dir.glob("*.nc"))
+    print(f"\nUploading {len(nc_files)} .nc files to s3://{bucket}/")
+    for nc_path in nc_files:
+        s3.upload_file(
+            Filename=str(nc_path),
+            Bucket=bucket,
+            Key=nc_path.name,
+        )
+        print(f"  Uploaded → s3://{bucket}/{nc_path.name}")
+    print("Upload complete.")
 
 
 # ── CLI argument parsing ───────────────────────────────────────────────────────
@@ -338,8 +332,8 @@ def main() -> None:
     print(f"  Target bucket: s3://{s3_bucket}/")
     print(f"  Uncomment the body of upload_to_s3() in this file to enable.")
 
-    # ── S3 upload — uncomment when AWS credentials are ready ──────────────
-    # upload_to_s3(MODELS_DIR, s3_bucket)
+    # ── S3 upload ──────────────────────────────────────────────────────────
+    upload_to_s3(MODELS_DIR, s3_bucket)
 
 
 if __name__ == "__main__":

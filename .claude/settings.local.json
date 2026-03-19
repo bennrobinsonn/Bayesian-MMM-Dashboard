@@ -9,7 +9,16 @@
       "Bash(python -c \"from api.services.inference import get_channel_contributions, get_saturation_curves, get_model_fit, spend_stats_from_df; print\\(''All exports importable OK''\\)\")",
       "Bash(python -c \":*)",
       "Bash(npm install:*)",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "Bash(mkdir -p ~/.ssh)",
+      "Bash(aws ec2:*)",
+      "Bash(~/.ssh/mmm-key.pem)",
+      "Bash(chmod 400 ~/.ssh/mmm-key.pem)",
+      "Bash(bash setup_aws.sh)",
+      "Bash(python3 -c \":*)",
+      "Bash(pip3 install:*)",
+      "Bash(aws iam create-role --role-name mmm-ec2-s3-read --assume-role-policy-document '{:*)",
+      "Bash(aws iam:*)"
     ]
   }
 }

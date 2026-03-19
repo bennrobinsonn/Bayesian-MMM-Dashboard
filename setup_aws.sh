@@ -31,10 +31,10 @@ set -euo pipefail   # exit on error, unbound var, or pipe failure
 
 # Your IAM Identity Center profile name from ~/.aws/credentials
 # Format: 123456789_myisb_IsbUsersPS  (Cal Poly sandbox)
-PROFILE="YOUR_PROFILE_NAME"
+PROFILE="mmm-project"
 
 # Email address to receive billing alert notifications
-ALERT_EMAIL="your-email@example.com"
+ALERT_EMAIL="ben.robbie.ren@gmail.com"
 
 # EC2 key pair name — must already exist in us-east-1, or create one first:
 #   aws ec2 create-key-pair --key-name mmm-key --query 'KeyMaterial' \
@@ -49,7 +49,7 @@ KEY_PAIR_NAME="mmm-key"
 REGION="us-east-1"
 S3_BUCKET="mmm-project-inference-data"
 SECURITY_GROUP_NAME="mmm-sg"
-INSTANCE_TYPE="t2.micro"
+INSTANCE_TYPE="t3.micro"   # t2.micro not permitted in this sandbox; t3.micro is same cost (~$0.0104/hr)
 
 # Color codes for readable output
 RED='\033[0;31m'; YELLOW='\033[1;33m'; GREEN='\033[0;32m'; NC='\033[0m'

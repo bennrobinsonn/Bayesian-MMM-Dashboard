@@ -37,9 +37,9 @@ REPO_ROOT    = Path(__file__).resolve().parent.parent.parent
 MODELS_DIR   = REPO_ROOT / "models"
 CONFIG_PATH  = REPO_ROOT / "datasets_config.json"
 
-# Toggle this to True once AWS credentials are configured and .nc files
-# have been uploaded to S3 via the upload_to_s3() function in fit_models.py.
-USE_S3 = False
+# Files are now uploaded to S3 — use the S3 loader on EC2.
+# The EC2 instance uses its IAM role (no hardcoded credentials).
+USE_S3 = True
 
 _config = json.loads(CONFIG_PATH.read_text())
 VALID_BRAND_IDS    = {b["id"] for b in _config["brands"]}
@@ -108,21 +108,18 @@ def _load_from_s3(brand_id: str, prior_config: str) -> az.InferenceData:
       2. .nc files uploaded via upload_to_s3() in fit_models.py
       3. boto3 installed (it's in requirements.txt)
     """
-    raise NotImplementedError(
-        "S3 loading is not yet enabled. Set USE_S3 = False to use local files, "
-        "or configure AWS credentials and uncomment the boto3 block below."
-    )
+    import boto3
+    session = boto3.Session()  # uses IAM role on EC2, no hardcoded credentials
+    s3 = session.client("s3", region_name="us-east-1")
 
-    # ── Uncomment below once AWS credentials are ready ──────────────────────
-    # import boto3
-    # session = boto3.Session()  # uses IAM role on EC2, no hardcoded credentials
-    # s3 = session.client("s3", region_name="us-east-1")
-    #
-    # key = f"{brand_id}_{prior_config}.nc"
-    # buf = io.BytesIO()
-    # s3.download_fileobj(S3_BUCKET, key, buf)
-    # buf.seek(0)
-    # return az.from_netcdf(buf)
+    key = f"{brand_id}_{prior_config}.nc"
+    buf = io.BytesIO()
+    s3.download_fileobj(S3_BUCKET, key, buf)
+    buf.seek(0)
+
+    # PyMC-Marketing saves as a flat xarray Dataset; wrap into posterior group
+    ds = xr.open_dataset(buf)
+    return az.InferenceData(posterior=ds)
 
 
 # ── Public interface ───────────────────────────────────────────────────────────
