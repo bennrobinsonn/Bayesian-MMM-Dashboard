@@ -9,7 +9,7 @@
  * When deployed, update API_BASE to the API Gateway URL.
  */
 
-const API_BASE = 'http://localhost:8000';
+const API_BASE = 'https://lbh9jtn0q6.execute-api.us-east-1.amazonaws.com';
 
 async function request(path, options = {}) {
   const res = await fetch(`${API_BASE}${path}`, {
