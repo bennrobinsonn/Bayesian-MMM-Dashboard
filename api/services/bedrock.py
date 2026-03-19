@@ -111,7 +111,7 @@ def _call_bedrock(prompt: str) -> dict:
     body = json.dumps({
         "messages": [{"role": "user", "content": [{"text": prompt}]}],
         "inferenceConfig": {
-            "maxNewTokens": 500,
+            "maxTokens": 500,
             "temperature": 0.3,
         },
     })
