@@ -29,8 +29,7 @@ import json
 import re
 
 # ── Toggle ─────────────────────────────────────────────────────────────────────
-# Set to True once Anthropic use case form is approved (~15 min after submission)
-BEDROCK_ENABLED = False
+BEDROCK_ENABLED = True
 
 # ── Prompt builder ─────────────────────────────────────────────────────────────
 
@@ -97,33 +96,38 @@ Ground every claim in the numbers above. Be direct. Do not hedge excessively."""
 
 def _call_bedrock(prompt: str) -> dict:
     """
-    Calls Claude Haiku on Amazon Bedrock and returns parsed JSON response.
+    Calls Amazon Titan Text Express on Bedrock and returns parsed JSON response.
 
-    Prerequisites (uncomment body when ready):
-      1. boto3 installed  ✓  (in requirements.txt)
-      2. AWS credentials configured (IAM role on EC2, or Identity Center locally)
-      3. EC2 instance role includes: bedrock:InvokeModel on
-         arn:aws:bedrock:us-east-1::foundation-model/anthropic.claude-3-haiku-20240307-v1:0
+    Titan uses a different request/response shape from Claude:
+      Request:  { inputText, textGenerationConfig: { maxTokenCount, temperature, topP } }
+      Response: { results: [ { outputText } ] }
+
+    No use-case approval required — Titan is AWS-native and enabled by default.
+    IAM permission: bedrock:InvokeModel on amazon.titan-text-express-v1
     """
     import boto3
     client = boto3.client("bedrock-runtime", region_name="us-east-1")
 
+    # Titan's request body — note: maxTokenCount (not max_tokens)
     body = json.dumps({
-        "anthropic_version": "bedrock-2023-05-31",
-        "max_tokens": 500,
-        "temperature": 0.3,
-        "messages": [{"role": "user", "content": prompt}],
+        "inputText": prompt,
+        "textGenerationConfig": {
+            "maxTokenCount": 500,
+            "temperature": 0.3,
+            "topP": 0.9,
+        },
     })
 
     response = client.invoke_model(
-        modelId="anthropic.claude-3-haiku-20240307-v1:0",
+        modelId="amazon.titan-text-express-v1",
         body=body,
         contentType="application/json",
         accept="application/json",
     )
 
     raw = json.loads(response["body"].read())
-    text = raw["content"][0]["text"]
+    # Titan returns: { "results": [ { "outputText": "..." } ] }
+    text = raw["results"][0]["outputText"]
 
     # Strip markdown code fences if present, then parse JSON
     text = re.sub(r"^```(?:json)?\s*|\s*```$", "", text.strip())
