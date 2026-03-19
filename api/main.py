@@ -43,15 +43,19 @@ app = FastAPI(
 )
 
 # ── CORS ───────────────────────────────────────────────────────────────────────
-# Allow all origins during development so the React dev server (localhost:3000)
-# and Lovable's preview URL can both call the API without browser blocks.
-# Lock this down to specific origins before final production deploy.
+# NOTE: allow_origins=["*"] is incompatible with allow_credentials=True —
+# browsers reject that combination. Origins must be listed explicitly when
+# credentials are enabled.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],        # ← tighten before production
+    allow_origins=[
+        "https://bayesian-mmm-dashboard.vercel.app",  # production frontend
+        "http://localhost:3000",                        # local dev
+        "http://localhost:5173",                        # Vite dev server
+    ],
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization"],
 )
 
 # ── Register routers ───────────────────────────────────────────────────────────
