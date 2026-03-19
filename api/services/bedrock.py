@@ -29,7 +29,8 @@ import json
 import re
 
 # ── Toggle ─────────────────────────────────────────────────────────────────────
-BEDROCK_ENABLED = True
+# Set to True once Anthropic use case form is approved (~15 min after submission)
+BEDROCK_ENABLED = False
 
 # ── Prompt builder ─────────────────────────────────────────────────────────────
 
