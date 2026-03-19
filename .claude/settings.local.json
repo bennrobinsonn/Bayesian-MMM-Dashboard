@@ -36,7 +36,20 @@
       "Bash(curl -s -X POST \"https://lbh9jtn0q6.execute-api.us-east-1.amazonaws.com/recommend\" -H \"Content-Type: application/json\" -d '{:*)",
       "Bash(ssh -i ~/.ssh/mmm-key.pem ec2-user@35.172.191.38 \"tail -30 /home/ec2-user/uvicorn.log\")",
       "Bash(aws bedrock:*)",
-      "Bash(ssh -i ~/.ssh/mmm-key.pem ec2-user@35.172.191.38 \"cd /home/ec2-user/mmm-project && git pull origin main && echo pulled\")"
+      "Bash(ssh -i ~/.ssh/mmm-key.pem ec2-user@35.172.191.38 \"cd /home/ec2-user/mmm-project && git pull origin main && echo pulled\")",
+      "Bash(ssh -i ~/.ssh/mmm-key.pem ec2-user@35.172.191.38 \"tail -50 /home/ec2-user/uvicorn.log\")",
+      "Bash(ssh -i ~/.ssh/mmm-key.pem ec2-user@35.172.191.38 \"grep -i ''error\\\\|exception\\\\|traceback'' /home/ec2-user/uvicorn.log | tail -20\")",
+      "Bash(ssh -i ~/.ssh/mmm-key.pem ec2-user@35.172.191.38 \"tail -60 /home/ec2-user/uvicorn.log\")",
+      "Bash(ssh -i ~/.ssh/mmm-key.pem ec2-user@35.172.191.38 \"cd /home/ec2-user/mmm-project && git pull origin main && sudo pkill -f uvicorn; echo pulled\")",
+      "Bash(curl -s -X POST \"https://lbh9jtn0q6.execute-api.us-east-1.amazonaws.com/recommend\" -H \"Content-Type: application/json\" -d '{\"\"\"\"brand\"\"\"\":\"\"\"\"kova\"\"\"\",\"\"\"\"priors\"\"\"\":\"\"\"\"balanced\"\"\"\",\"\"\"\"current_allocation\"\"\"\":{\"\"\"\"Meta\"\"\"\":0.4,\"\"\"\"TikTok\"\"\"\":0.3,\"\"\"\"Paid_Search\"\"\"\":0.2,\"\"\"\"Email\"\"\"\":0.1},\"\"\"\"budget_total\"\"\"\":50000}')",
+      "Bash(ssh -i ~/.ssh/mmm-key.pem ec2-user@35.172.191.38 \"cd /home/ec2-user/mmm-project && git pull origin main && sudo pkill -f uvicorn; echo done\")",
+      "Bash(curl -sv -X POST \"https://lbh9jtn0q6.execute-api.us-east-1.amazonaws.com/recommend\" -H \"Content-Type: application/json\" -d '{\"\"\"\"brand\"\"\"\":\"\"\"\"kova\"\"\"\",\"\"\"\"priors\"\"\"\":\"\"\"\"balanced\"\"\"\",\"\"\"\"current_allocation\"\"\"\":{\"\"\"\"Meta\"\"\"\":0.4,\"\"\"\"TikTok\"\"\"\":0.3,\"\"\"\"Paid_Search\"\"\"\":0.2,\"\"\"\"Email\"\"\"\":0.1},\"\"\"\"budget_total\"\"\"\":50000}')",
+      "Bash(ssh -i ~/.ssh/mmm-key.pem ec2-user@35.172.191.38 \"grep -A3 ''botocore\\\\|Error\\\\|Exception'' /home/ec2-user/uvicorn.log | tail -20\")",
+      "Bash(curl -s -X POST \"https://lbh9jtn0q6.execute-api.us-east-1.amazonaws.com/recommend\" -H \"Content-Type: application/json\" -d '{\"\"brand\"\":\"\"kova\"\",\"\"priors\"\":\"\"balanced\"\",\"\"current_allocation\"\":{\"\"Meta\"\":0.4,\"\"TikTok\"\":0.3,\"\"Paid_Search\"\":0.2,\"\"Email\"\":0.1},\"\"budget_total\"\":50000}')",
+      "Bash(ssh -i ~/.ssh/mmm-key.pem ec2-user@35.172.191.38 \"grep ''botocore\\\\|Error\\\\|raise'' /home/ec2-user/uvicorn.log | tail -10\")",
+      "Bash(ssh -i ~/.ssh/mmm-key.pem ec2-user@35.172.191.38 \"sudo pkill -f uvicorn; sleep 1; cd /home/ec2-user/mmm-project && nohup python3.11 -m uvicorn api.main:app --host 0.0.0.0 --port 8000 --workers 2 > /home/ec2-user/uvicorn.log 2>&1 &; echo started\")",
+      "Bash(ssh -i ~/.ssh/mmm-key.pem ec2-user@35.172.191.38 \"sudo pkill -f uvicorn || true\")",
+      "Bash(ssh -i ~/.ssh/mmm-key.pem ec2-user@35.172.191.38 \"cd /home/ec2-user/mmm-project && nohup python3.11 -m uvicorn api.main:app --host 0.0.0.0 --port 8000 --workers 2 > /home/ec2-user/uvicorn.log 2>&1 &\")"
     ]
   }
 }
